@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>D&D Adventure</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+      background-color: #1b1b1b;
+      color: #f9e79f;
+      font-family: 'MedievalSharp', cursive;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #ffe066;
+      text-shadow: 2px 2px 10px #d4af37;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      color: #fff3b0;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      font-size: 20px;
+      padding: 14px 32px;
+      margin: 10px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+
+    .btn-yellow {
+      background: linear-gradient(to right, #f9d423, #ff4e50);
+      color: black;
+    }
+
+    .btn-yellow:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #ffd700;
+    }
+
+    .btn-red {
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      color: white;
+    }
+
+    .btn-red:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #ff4b2b;
+    }
+
+    .btn-gray {
+      background: #444;
+      color: #ddd;
+    }
+
+    .btn-gray:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px #aaa;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    #footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome, Adventurer!</h1>
+
+  <a href="/view_characters">
+    <button class="btn btn-yellow">📜 View Characters</button>
+  </a>
+
+  <a href="/start_adventure">
+    <button class="btn btn-red">⚔️ Start Adventure</button>
+  </a>
+
+  <a href="/rule">
+    <button class="btn btn-yellow">📖 View Rules</button>
+  </a>
+
+  <button class="btn btn-gray" onclick="exitGame()">🚪 Exit</button>
+
+  <div id="footer">© 2025 RealmForge Studios</div>
+
+  <script>
+    function exitGame() {
+      alert("Exiting game. See you next time!");
+      window.close(); // Note: This may not work in most browsers due to security
+    }
+  </script>
+</body>
+</html>

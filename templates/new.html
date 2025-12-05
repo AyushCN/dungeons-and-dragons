@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Character</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1b1b1b;
+      background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+      color: #f9e79f;
+      font-family: 'MedievalSharp', cursive;
+      padding: 30px;
+    }
+    h1 {
+      font-size: 40px;
+      text-align: center;
+      color: #ffe066;
+      margin-bottom: 30px;
+    }
+    #charForm {
+      display: none; /* Initially hidden */
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      background: #2c2c2c;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #d4af37;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      margin-top: 5px;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      font-family: 'MedievalSharp', cursive;
+    }
+ .char-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px; /* reduce the gap */
+}
+
+.details {
+  display: block;
+  margin: 0;          /* remove any default margin */
+  max-width: 400px;   /* reduce if needed */
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  background-color: #1f1f1f;
+  border: 1px solid #888;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  max-height: 260px;
+  white-space: pre-wrap;
+}
+
+.details {
+  flex: 1;
+  max-width: 400px; /* optional: prevent huge boxes */
+  margin: 0; /* remove default spacing */
+  padding: 10px;
+  background
+}
+
+@media (max-width: 950px) {
+  .char-details {
+    flex-direction: column;
+  }
+
+  .details {
+    width: 100%;
+  }
+}
+
+    button {
+      background: #ffe066;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    #response {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1f1f1f;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #d4af37;
+      white-space: pre-wrap;
+    }
+    #toggleCreate {
+      font-size: 18px;
+      background: #ffe066;
+      color: #000;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 Create Your Character</h1>
+
+  <!-- Toggle button -->
+  <button id="toggleCreate" class="btn-small">＋</button>
+
+  <!-- Form to create character -->
+  <form id="charForm">
+    <label for="charName">Name:</label>
+    <input type="text" id="charName" name="name" required>
+
+    <label for="charRace">Race:</label>
+    <select id="charRace" name="race_id" required>
+      <option value="">Loading races…</option>
+    </select>
+
+    <label for="charClass">Class:</label>
+    <select id="charClass" name="class_id" required>
+      <option value="">Loading classes…</option>
+    </select>
+
+    <label for="charDesc">Description:</label>
+    <textarea id="charDesc" name="description" rows="4" required></textarea>
+
+    <button type="submit">Create Character</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    const form = document.getElementById('charForm');
+    const responseDiv = document.getElementById('response');
+    const raceSelect = document.getElementById('charRace');
+    const classSelect = document.getElementById('charClass');
+    const toggleCreateBtn = document.getElementById('toggleCreate');
+
+    // Fetch races from backend
+    async function loadRaces() {
+      try {
+        const res = await fetch('/get_races');
+        const races = await res.json();
+        raceSelect.innerHTML = '';
+        races.forEach(r => {
+          const opt = document.createElement('option');
+          opt.value = r.race_id;
+          opt.textContent = `${r.race_name} — ${r.race_description}`;
+          raceSelect.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Failed to load races:', err);
+        raceSelect.innerHTML = '<option value="">Error loading races</option>';
+      }
+    }
+	
+    // Fetch classes from backend
+    async function loadCommonClasses() {
+      try {
+        const res = await fetch('/get_common_classes?job_type=Common');
+        const classes = await res.json();
+        classSelect.innerHTML = '';
+        classes.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.class_id;
+          opt.textContent = `${c.class_name} — ${c.class_description}`;
+          classSelect.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Failed to load classes:', err);
+        classSelect.innerHTML = '<option value="">Error loading classes</option>';
+      }
+    }
+   // Handle form submission
+	form.addEventListener('submit', async e => {
+	  e.preventDefault();
+	  const data = Object.fromEntries(new FormData(form).entries());
+
+	  try {
+	    const res = await fetch('/create_character', {
+	      method: 'POST',
+	      headers: { 'Content-Type': 'application/json' },
+	      body: JSON.stringify(data)
+	    });
+	    const result = await res.json();
+	    if (res.ok) {
+	      alert('Character created successfully!');
+	      form.reset();
+	    } else {
+	      alert(`Error: ${result.message}`);
+	    }
+	  } catch (err) {
+	    console.error('Error:', err);
+	    alert('Error sending request.');
+	  }
+	});
+
+	// Initialize selects on page load
+	document.addEventListener('DOMContentLoaded', () => {
+	  loadRaces();
+	  loadCommonClasses();
+	});
+
+
+    // Toggle the visibility of the character creation form
+    toggleCreateBtn.addEventListener('click', () => {
+      const formIsVisible = form.style.display === 'block';
+      form.style.display = formIsVisible ? 'none' : 'block';
+      toggleCreateBtn.textContent = formIsVisible ? '＋' : '－'; // Change button text based on visibility
+    });
+  </script>
+
+</body>
+</html>
+

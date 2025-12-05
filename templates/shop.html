@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D&D Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1b1b1b;
+      background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+      font-family: 'MedievalSharp', cursive;
+      color: #f9e79f;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #ffe066;
+    }
+
+    .btn-toggle {
+      background: #f0c14b;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-weight: bold;
+      margin: 5px;
+    }
+
+    .btn-buy {
+      background-color: #4CAF50;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-sell {
+      background-color: #c0392b;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .shop-container {
+      width: 60%;
+    }
+
+    .char-card {
+      width: 400px;
+      background: #2e2e2e;
+      border: 2px solid #d4af37;
+      border-radius: 12px;
+      padding: 15px;
+      display: inline-block;
+      margin-left: 20px;
+      vertical-align: top;
+    }
+
+    .shop-card {
+      background: #3a2f25;
+      border: 2px solid #e0b97d;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      width: 90%;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #f9e7c4;
+    }
+
+    .shop-card h3 {
+      color: #ffe066;
+      margin-bottom: 10px;
+    }
+
+    .section-buttons {
+      position: relative;
+      z-index: 2;
+      background-color: #1b1b1b;
+      padding: 10px 0;
+    }
+
+    .tab-content {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .item-toggle {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .item-details {
+      display: none;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 5px;
+      border: 1px solid #999;
+    }
+
+    .toggle-section {
+      display: none;
+      background-color: #1f1f1f;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #aaa;
+    }
+
+    .item-card {
+      background-color: #4d4d4d;
+      border: 2px solid #e0b97d;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 15px;
+      color: #f9e7c4;
+    }
+
+    .item-card h4 {
+      color: #ffe066;
+    }
+
+    .item-card p {
+      margin: 10px 0;
+    }
+
+    .item-card .special-effects {
+      color: #16a085;
+    }
+
+    .item-card .price {
+      font-weight: bold;
+      color: #e74c3c;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .shop-container, .char-card {
+        width: 100%;
+      }
+      body {
+        display: block;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div style="display: flex; justify-content: space-between;">
+    <a href="/"><button class="btn-toggle">🏠 Home</button></a>
+    <a href="/start_adventure"><button class="btn-toggle">⚔ Start Adventure</button></a>
+  </div>
+
+  <h1>🏪 Welcome to the Shop</h1>
+
+  <!-- Section for tab buttons -->
+  <div class="section-buttons">
+    <button class="btn-toggle" onclick="toggleTab('itemsTab')">🗡 Items</button>
+    <button class="btn-toggle" onclick="toggleTab('consumablesTab')">🧪 Consumables</button>
+    <button class="btn-toggle" onclick="toggleTab('sellTab')">💰 Sell</button>
+  </div>
+
+  <div class="container">
+    <div class="shop-container">
+      <div id="itemsTab" class="tab-content" style="display:none;">
+        <h2>Weapons / Armor / Artifacts</h2>
+
+        <div class="shop-card">
+          <h3>Weapons</h3>
+          <div id="weaponsContainer"></div>
+        </div>
+
+        <div class="shop-card">
+          <h3>Armor</h3>
+          <div id="armorContainer"></div>
+        </div>
+
+        <div class="shop-card">
+          <h3>Artifacts</h3>
+          <div id="artifactsContainer"></div>
+        </div>
+      </div>
+
+      <div id="consumablesTab" class="tab-content" style="display:none;">
+        <h2>Consumables</h2>
+        <div class="shop-card">
+          <div id="consumablesContainer"></div>
+        </div>
+      </div>
+
+      <div id="sellTab" class="tab-content" style="display:none;">
+        <h2>Your Inventory</h2>
+        <div class="shop-card">
+          <div id="sellContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Character Card Section -->
+    <div class="char-card">
+      <h3 id="charName">Character</h3>
+      <p id="charRace"></p>
+      <p id="charClass"></p>
+      <p id="charGold"></p>
+      <button class="btn-toggle" onclick="toggleSection('statDetails')">📊 Stats</button>
+      <button class="btn-toggle" onclick="toggleSection('bagDetails')">🎒 Bag</button>
+
+      <div id="statDetails" class="toggle-section"></div>
+      <div id="bagDetails" class="toggle-section"></div>
+    </div>
+  </div>
+ <script>
+    const characterId = {{ character_id | tojson }};
+
+    function toggleSection(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function toggleTab(id) {
+      ['itemsTab','consumablesTab','sellTab'].forEach(tab => {
+        document.getElementById(tab).style.display = (tab === id) ? 'block' : 'none';
+      });
+    }
+
+    // Load character info
+    async function loadCharacter() {
+      const res = await fetch(`/get_character_details?char_id=${characterId}`);
+      const char = await res.json();
+      document.getElementById("charName").innerText = char.name;
+      document.getElementById("charRace").innerText = "Race: " + char.race_name;
+      document.getElementById("charClass").innerText = "Class: " + char.class_name;
+      document.getElementById("charGold").innerText = "Gold: " + char.gold;
+
+      document.getElementById("statDetails").innerHTML =
+        Object.entries(char.final_stats)
+              .map(([k,v])=>`<p>${k.toUpperCase()}: ${v}</p>`)
+              .join("");
+
+      document.getElementById("bagDetails").innerHTML = `
+        <p>Weapon 1: ${char.weapon_1_name||"None"}</p>
+        <p>Weapon 2: ${char.weapon_2_name||"None"}</p>
+        <p>Armor 1: ${char.armor_1_name||"None"}</p>
+        <p>Armor 2: ${char.armor_2_name||"None"}</p>
+        <p>Artifact 1: ${char.artifact_1_name||"None"}</p>
+        <p>Artifact 2: ${char.artifact_2_name||"None"}</p>
+      `;
+    }
+
+    // Load all shop items
+    async function loadItems() {
+      try {
+        const res = await fetch('/api/items');
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const data = await res.json();
+        console.log('items:', data);
+
+        // render each category into its container
+        renderItems(data.weapons, 'weaponsContainer');
+        renderItems(data.armor,   'armorContainer');
+        renderItems(data.artifacts,'artifactsContainer');
+        renderItems(data.consumables,'consumablesContainer');
+      } catch(err) {
+        console.error('loadItems error:', err);
+      }
+    }
+function renderItems(list, containerId, isBuy = true) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  list.forEach((item, index) => {
+    const detailId = `${containerId}_detail${index}`;
+    const buttonHTML = isBuy
+      ? `<button class="btn-buy" onclick="buyItem('${item.id}')">Buy</button>`
+      : `<button class="btn-sell" onclick="sellItem('${item.id}')">Sell</button>`;
+
+    // Get the color for the item's rarity and card background
+    const rarityColor = getRarityColor(item.rarity);
+
+    container.innerHTML += `
+
+      <div class="item-toggle" style="background-color: #0000000; color: #FFFFFF; padding: 10px; border-radius: 8px; margin: 10px 0;">
+        <div class="item-info">
+          <strong style="color: ${rarityColor};">${item.name} [${item.rarity}]</strong>
+          <div style="display: flex; gap: 10px;">
+  <button class="btn-toggle" onclick="toggleSection('${detailId}')">Info</button>
+  ${buttonHTML}
+</div>
+
+        <div id="${detailId}" class="item-details">
+          <p>${item.desc}</p>
+          <p>${isBuy ? 'Price' : 'Sell Price'}: ${item.price || item.sellPrice} gold</p>
+          <p>${displayStats(item)}</p>
+          <p>${displayEffects(item)}</p>
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+function getRarityColor(rarity) {
+  switch (rarity) {
+    case "Common":
+      return "#808080"; // Gray for Common
+    case "Rare":
+      return "#0000FF"; // Blue for Rare
+    case "Epic":
+      return "#800080"; // Purple for Epic
+    case "Legend":
+      return "#FFD700"; // Gold for Legendary
+    default:
+      return "#FFFFFF"; // Default to white if rarity is unknown
+  }
+}
+
+function displayStats(item) {
+  let statsHTML = '';
+
+  // Only display stats if they exist and are non-zero
+  if (item.def > 0) statsHTML += `Defense: ${item.def} <br>`;
+  if (item.spd > 0) statsHTML += `Speed: ${item.spd} <br>`;
+  if (item.str > 0) statsHTML += `Strength: ${item.str} <br>`;
+  if (item.int > 0) statsHTML += `Intelligence: ${item.int} <br>`;
+  if (item.cha > 0) statsHTML += `Charisma: ${item.cha} <br>`;
+  if (item.luck > 0) statsHTML += `Luck: ${item.luck} <br>`;
+
+  return statsHTML;
+}
+
+function displayEffects(item) {
+  if (item.effects && item.effects.length > 0) {
+    return `Special Effects: ${item.effects.join(", ")}`;
+  }
+  return '';
+}
+
+function buyItem(id) {
+  alert(`Buying item: ${id}`);
+  // Handle purchase logic here
+}
+
+function sellItem(id) {
+  alert(`Selling item: ${id}`);
+  // Handle sell logic here
+}
+
+function createItemCard(item) {
+  const card = document.createElement('div');
+  card.classList.add('item-card');
+
+  const name = document.createElement('h4');
+  name.textContent = item.name || item.w_name || item.a_name || item.art_name || item.c_name;
+  card.appendChild(name);
+
+  const description = document.createElement('p');
+  description.textContent = item.description || item.weapon_description || item.armor_description || item.art_description || "No description available.";
+  card.appendChild(description);
+
+  if (item.special_effects) {
+    const effects = document.createElement('div');
+    effects.classList.add('special-effects');
+    effects.textContent = `Special Effects: ${JSON.parse(item.special_effects).join(', ')}`;
+    card.appendChild(effects);
+  }
+
+  if (item.price) {
+    const price = document.createElement('div');
+    price.classList.add('price');
+    price.textContent = `Price: ${item.price} Gold`;
+    card.appendChild(price);
+  }
+
+  // Create button container
+  const btnContainer = document.createElement('div');
+  btnContainer.style.marginTop = '10px';
+
+  // Info Button
+  const infoBtn = document.createElement('button');
+  infoBtn.className = 'btn-toggle';
+  infoBtn.textContent = 'ℹ Info';
+  infoBtn.onclick = () => {
+    alert(description.textContent); // You can customize this to toggle a section if you prefer
+  };
+
+  // Buy Button
+  const buyBtn = document.createElement('button');
+  buyBtn.className = 'btn-buy';
+  buyBtn.textContent = 'Buy';
+  buyBtn.onclick = () => {
+    alert(`Buying ${name.textContent}`);
+    // You would probably POST to a Flask route here
+  };
+
+  // Sell Button
+  const sellBtn = document.createElement('button');
+  sellBtn.className = 'btn-sell';
+  sellBtn.textContent = 'Sell';
+  sellBtn.onclick = () => {
+    alert(`Selling ${name.textContent}`);
+    // Same here, make a call to your backend
+  };
+
+  btnContainer.appendChild(infoBtn);
+  btnContainer.appendChild(buyBtn);
+  btnContainer.appendChild(sellBtn);
+  card.appendChild(btnContainer);
+
+  return card;
+}
+
+
+
+    window.onload = () => {
+      loadCharacter();
+      loadItems();
+    };
+  </script>
+</body>
+</html>

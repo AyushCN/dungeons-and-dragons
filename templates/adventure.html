@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View Characters</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+body {
+  background-color: #1b1b1b;
+  background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+  color: #f9e79f;
+  font-family: 'MedievalSharp', cursive;
+  padding: 30px;
+}
+
+h1 {
+  font-size: 40px;
+  text-align: center;
+  color: #ffe066;
+  margin-bottom: 30px;
+}
+
+.character-card {
+  display: flex;
+  flex-direction: row;       /* Ensure side-by-side layout */
+  align-items: flex-start;   /* Top alignment of items */
+  justify-content: space-between;
+  flex-wrap: nowrap;         /* Prevent wrapping */
+  gap: 20px;
+  background: #2c2c2c;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 10px #d4af37;
+  overflow-x: auto;          /* Allow horizontal scroll if tight */
+}
+
+
+.char-info {
+  flex: 1 1 250px;
+  min-width: 200px;
+}
+
+
+.char-info h3 {
+  margin-top: 0;
+  color: #ffd700;
+}
+
+.char-info p {
+  margin: 4px 0;
+  font-size: 16px;
+}
+
+.char-actions {
+  margin-top: 10px;
+}
+
+.char-details {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  overflow-x: auto; /* allows horizontal overflow without breaking */
+  width: 100%;
+  padding-top: 10px;
+}
+.details {
+  width: 450px; /* fixed width */
+  background-color: #1f1f1f;
+  border: 1px solid #888;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 14px;
+  display: none;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  max-height: 260px;
+}
+
+
+.details.visible {
+  display: block;
+}
+
+.btn-small {
+  font-size: 12px;
+  padding: 4px 10px;
+  margin: 5px 5px 0 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  background: #f0c14b;
+  color: #000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+.select-btn {
+  font-size: 12px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.select-btn:hover {
+  background-color: #45a049;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <h1>🧭 Select Your Adventurer</h1>
+
+
+
+
+
+   <div>
+     <div id="characterList"></div>
+   <script>
+    async function loadCharacters() {
+      const res = await fetch("/get_characters");
+      const data = await res.json();
+      const container = document.getElementById("characterList");
+      container.innerHTML = "";
+
+      data.forEach(char => {
+        const weapons = [char.weapon_1_name, char.weapon_2_name].filter(Boolean).join(", ") || "None";
+        const armors = [char.armor_1_name, char.armor_2_name].filter(Boolean).join(", ") || "None";
+        const artifacts = [char.artifact_1_name, char.artifact_2_name].filter(Boolean).join(", ") || "None";
+
+        let consumables = "";
+        for (let i = 1; i <= 5; i++) {
+          const name = char[`consumable_${i}_name`];
+          const count = char[`consumable_${i}_count`];
+          if (name) consumables += `${name} ×${count} | `;
+        }
+        if (!consumables) consumables = "None";
+
+        const str = (char.strength || 0) + (char.race_str || 0) + (char.class_str || 0) + (char.weapon_1_str || 0);
+        const def = (char.defense || 0) + (char.race_def || 0) + (char.class_def || 0) + (char.armor_1_def || 0);
+        const int = (char.intelligence || 0) + (char.race_int || 0) + (char.class_int || 0) + (char.weapon_1_int || 0);
+        const spd = (char.speed || 0) + (char.race_spd || 0) + (char.class_spd || 0) + (char.armor_1_spd || 0);
+        const luck = (char.luck || 0) + (char.race_luck || 0) + (char.class_luck || 0) + (char.artifact_1_luck || 0);
+        const cha = (char.charisma || 0) + (char.race_cha || 0) + (char.class_cha || 0) + (char.artifact_1_cha || 0);
+
+        const statBlock = `Final Stats:
+STR: ${str} [${char.strength || 0} + ${char.race_str || 0} (race) + ${char.class_str || 0} (class) + ${char.weapon_1_str || 0} (weapon)]
+DEF: ${def} [${char.defense || 0} + ${char.race_def || 0} (race) + ${char.class_def || 0} (class) + ${char.armor_1_def || 0} (armor)]
+INT: ${int} [${char.intelligence || 0} + ${char.race_int || 0} (race) + ${char.class_int || 0} (class) + ${char.weapon_1_int || 0} (weapon)]
+SPD: ${spd} [${char.speed || 0} + ${char.race_spd || 0} (race) + ${char.class_spd || 0} (class) + ${char.armor_1_spd || 0} (armor)]
+LUCK: ${luck} [${char.luck || 0} + ${char.race_luck || 0} (race) + ${char.class_luck || 0} (class) + ${char.artifact_1_luck || 0} (artifact)]
+CHA: ${cha} [${char.charisma || 0} + ${char.race_cha || 0} (race) + ${char.class_cha || 0} (class) + ${char.artifact_1_cha || 0} (artifact)]`;
+
+        const card = document.createElement("div");
+        card.className = "character-card";
+
+        card.innerHTML = `
+          <div class="char-info">
+            <h3>${char.name}</h3>
+            <p><strong>Race:</strong> ${char.race_name || "Unknown"}</p>
+            <p><strong>Class:</strong> ${char.class_name || "Unknown"}</p>
+            <p><strong>Level:</strong> ${char.level || 1}</p>
+            <p><strong>Gold:</strong> ${char.gold || 0}</p>
+
+              <p><strong>Last Adventure:</strong> ${char.last_adventure ? "✅ Completed" : "❌ Not Started"}</p>
+            </div>
+
+            <div class="char-actions">
+              <button class="btn-small" onclick="toggleSection('${char.character_id}_bag')">🎒 Bag</button>
+              <button class="btn-small" onclick="toggleSection('${char.character_id}_stats')">📊 Stats</button>
+              <button class="select-btn" onclick="selectCharacter(${char.character_id})">Select</button>
+
+            </div>
+          </div>
+          <div class="char-details">
+            <div class="details stats-box">${statBlock}</div>
+            <div class="details bag-box">
+              <strong>Bag Contents:</strong><br>
+🎯 Weapons: ${weapons}<br>
+🛡 Armor: ${armors}<br>
+🔮 Artifacts: ${artifacts}<br>
+🧪 Consumables: ${consumables}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+
+        const statsBtn = card.querySelector('.btn-small:nth-child(1)');
+        const bagBtn = card.querySelector('.btn-small:nth-child(2)');
+
+        const statsBox = card.querySelector('.stats-box');
+        const bagBox = card.querySelector('.bag-box');
+        const detailContainer = card.querySelector('.char-details');
+
+        statsBtn.addEventListener('click', () => {
+          statsBox.classList.toggle('visible');
+          updateJustifyContent();
+        });
+
+        bagBtn.addEventListener('click', () => {
+          bagBox.classList.toggle('visible');
+          updateJustifyContent();
+        });
+
+        function updateJustifyContent() {
+  detailContainer.style.justifyContent = "flex-end";
+}
+
+      });
+    }
+
+    loadCharacters();
+    <!-- your other HTML above -->
+
+<!-- Your existing scripts, if any, go here -->
+
+  document.getElementById("toggleCreate").addEventListener("click", function () {
+    const form = document.getElementById("createForm");
+    form.style.display = form.style.display === "none" || form.style.display === "" ? "block" : "none";
+    if (form.style.display === "block") {
+      loadRaces();
+      loadCommonClasses();
+    }
+  });
+function selectCharacter(charId) {
+  if (charId) {
+    window.location.href = `/shop?char_id=${charId}`;
+  }
+}
+
+
+  </script>
+
+</body>
+</html>

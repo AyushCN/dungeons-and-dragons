@@ -1,0 +1,180 @@
+
+-- 🟩 Common (1 effect)
+INSERT INTO consumable (c_name, rarity, effect, price, description) VALUES
+('Healing Herb', 'Common', '["Heal 10 HP"]', 5, 'A basic herb that restores a bit of health.'),
+('Torchstick', 'Common', '["Light"]', 5, 'Glows faintly for a short time.'),
+('Sticky Sap', 'Common', '["Slow"]', 5, 'Slows enemy movement.'),
+('Chewroot', 'Common', '["Stamina Boost"]', 5, 'Increases endurance temporarily.'),
+('Iceleaf', 'Common', '["Cool Down"]', 5, 'Removes heat-based effects.');
+
+-- 🟦 Rare (1 effect)
+INSERT INTO consumable (c_name, rarity, effect, price, description) VALUES
+('Firebomb Flask', 'Rare', '["Burn"]', 15, 'Explodes on contact, setting things ablaze.'),
+('Mana Berry', 'Rare', '["Restore 20 MP"]', 15, 'Juicy and charged with mana.'),
+('Speed Elixir', 'Rare', '["Haste"]', 15, 'Makes you move like the wind.'),
+('Snake Oil', 'Rare', '["Poison Resist"]', 15, 'Old-time remedy with odd effects.'),
+('Blind Powder', 'Rare', '["Blind"]', 15, 'A quick flick blinds your foes.');
+
+-- 🟨 Epic (2 effects)
+INSERT INTO consumable (c_name, rarity, effect, price, description) VALUES
+('Thunder Core', 'Epic', '["Shock", "Stun"]', 50, 'Sparks fly when this is cracked.'),
+('Soul Tonic', 'Epic', '["Full Heal", "Revive Ally"]', 50, 'A rare and sacred blend.'),
+('Phoenix Ash', 'Epic', '["Revive", "Cleanse"]', 50, 'Glows with rebirth magic.'),
+('Iron Fume', 'Epic', '["a_def +2", "Poison Immunity"]', 50, 'Smells of burning metal.'),
+('Swift Seed', 'Epic', '["a_spd +2", "Jump Boost"]', 50, 'Illegal in most races.');
+
+-- 🟥 Legend (2 effects)
+INSERT INTO consumable (c_name, rarity, effect, price, description) VALUES
+('Astral Brew', 'Legend', '["Luck +3", "Invisibility"]', 75, 'Stars swirl within the liquid.'),
+('Titan Flask', 'Legend', '["STR +3", "Stun"]', 75, 'Makes you feel like a giant.'),
+('Essence of Light', 'Legend', '["Full Heal", "XP Boost"]', 75, 'Used in divine rituals.'),
+('Ether Capsule', 'Legend', '["Max Mana", "No Cost"]', 75, 'Feels like touching eternity.'),
+('Eclipse Vial', 'Legend', '["Dark Boost", "Teleport"]', 75, 'Darkness trapped in a bottle.');
+
+
+
+
+INSERT INTO artifact (art_name, rarity, art_luck, art_cha, special_effects, art_description) VALUES
+('Copper Eye', 'Common', 1, 1, '["Fear Resist"]', 'Watches silently with no eyelids.'),
+('Dry Leaf Sigil', 'Common', 0, 2, '["Charm +1"]', 'Crunchy and enchanted.'),
+('Thief’s Button', 'Common', 2, 0, '["Escape Boost"]', 'Pinned to rogue jackets.');
+
+
+
+INSERT INTO artifact (art_name, rarity, art_luck, art_cha, special_effects, art_description) VALUES
+('Spider Charm', 'Rare', 1, 1, '["Web Trap"]', 'Spins protection with silk.'),
+('Hero’s Pebble', 'Rare', 0, 2, '["Crit +1"]', 'From a battlefield legend.'),
+('Gleaming Fang', 'Rare', 2, 0, '["Bite Chance"]', 'From a shining beast.');
+
+
+
+INSERT INTO artifact (art_name, rarity, art_luck, art_cha, special_effects, art_description) VALUES
+('Dragon Coil', 'Epic', 4, 2, '["Flame Aura", "Regen", "Crit +1"]', 'Burns but doesn’t hurt.'),
+('Eye of Secrets', 'Epic', 3, 3, '["See Hidden", "Charm Aura"]', 'Knows what you forget.'),
+('Echo Amulet', 'Epic', 2, 4, '["Spell Repeat", "Mana Boost"]', 'Whispers back.');
+
+
+
+INSERT INTO artifact (art_name, rarity, art_luck, art_cha, special_effects, art_description) VALUES
+('Crown of Stars', 'Legend', 5, 4, '["Starlight", "Blind Immunity", "Regen", "Heal Aura"]', 'Gleams in divine rhythm.'),
+('Wyrm Skull', 'Legend', 6, 3, '["Fear Aura", "Crit Boost", "Burn Immunity", "Unbreakable"]', 'From the bones of flame.'),
+('Oracle Stone', 'Legend', 4, 5, '["Foresight", "Shield", "Silence Immunity", "Charm Boost"]', 'Sees what lies ahead.');
+
+
+
+-- 🟤 COMMON (Total ≤ 2, no skills)
+INSERT INTO armor (a_name, a_def, a_spd, rarity, special_effects, armor_description) VALUES
+('Worn Leather Vest', 1, 1, 'Common', '[]', 'A cracked but flexible vest.'),
+('Rusty Chainmail', 2, 0, 'Common', '[]', 'Rusted but still useful.'),
+('Scout Tunic', 0, 2, 'Common', '[]', 'Built for agility.'),
+('Patchwork Armor', 1, 1, 'Common', '[]', 'Sewn from scraps.'),
+('Peasant Guard', 0, 2, 'Common', '[]', 'Cheap and lightweight.');
+
+-- 🔵 RARE (Total ≤ 4, 1 skill)
+INSERT INTO armor (a_name, a_def, a_spd, rarity, special_effects, armor_description) VALUES
+('Reinforced Mail', 3, 1, 'Rare', '["Fortify"]', 'Strong plating with some mobility.'),
+('Windrunner Cloak', 1, 3, 'Rare', '["Evasion"]', 'Light and wind-slick.'),
+('Knight’s Plate', 4, 0, 'Rare', '["Taunt"]', 'Heavy armor for drawing attacks.'),
+('Scout’s Leathers', 2, 2, 'Rare', '["Dash Boost"]', 'Optimized for speed and safety.'),
+('Silent Guard', 0, 4, 'Rare', '["Stealth Shift"]', 'Perfect for quiet missions.');
+
+-- 🟣 EPIC (Total ≤ 6, 1 skill)
+INSERT INTO armor (a_name, a_def, a_spd, rarity, special_effects, armor_description) VALUES
+('Titan Guard', 5, 1, 'Epic', '["Stone Skin"]', 'Almost impenetrable.'),
+('Battle Commander Plate', 3, 3, 'Epic', '["Inspire"]', 'Worn by elite generals.'),
+('Wraith Shroud', 2, 4, 'Epic', '["Fade"]', 'Hard to track and even harder to hit.'),
+('Flameguard Shell', 4, 2, 'Epic', '["Fire Resistance"]', 'Toughened by dragon flame.'),
+('Chrono Wrap', 1, 5, 'Epic', '["Phase Step"]', 'For those who run through time.');
+
+-- 🟡 LEGEND (Total ≤ 9, 2 skills)
+INSERT INTO armor (a_name, a_def, a_spd, rarity, special_effects, armor_description) VALUES
+('Aegis of Kings', 6, 3, 'Legend', '["Auto Block", "Command Aura"]', 'Armor of an ancient king.'),
+('Ghostwalker Wrap', 3, 6, 'Legend', '["Phantom Dash", "Vanish"]', 'Silent and slippery.'),
+('Dragonscale Mail', 5, 4, 'Legend', '["Flame Shield", "Frighten"]', 'Scaled from a red wyrm.'),
+('Stormbreaker Coat', 4, 5, 'Legend', '["Lightning Reflex", "Shocking Riposte"]', 'Crackles with energy.'),
+('Chrono Guard', 2, 7, 'Legend', '["Time Slow", "Dodge Matrix"]', 'Makes time your ally.');
+
+
+
+
+
+
+
+-- Races (with their respective attributes, traits, skills, and descriptions, including negative values)
+
+INSERT INTO races (race_name, race_str, race_def, race_int, race_spd, race_luck, race_cha, race_type, passive_trait, negative_trait, active_skill, race_description) VALUES
+('Human', 1, 1, 1, 1, 1, 1, 'Classic', 'Adaptable: +5% XP gain', NULL, NULL, 'Balanced and adaptable.'),
+('Elf', 0, 0, 2, 2, 1, -1, 'Classic', 'Keen Sight: +10% ranged accuracy', NULL, NULL, 'Graceful, intelligent forest dwellers.'),
+('Orc', 3, 2, 0, 0, -1, 1, 'Classic', 'Battle Fury: +1 Strength when below 30% HP', NULL, NULL, 'Savage, strong, and brutal.'),
+('Halfling', 0, 0, 1, 2, 2, 1, 'Classic', 'Lucky Foot: +10% evasion', NULL, NULL, 'Small and nimble folk with boundless curiosity.'),
+('Gnome', -1, 0, 3, 2, 1, -1, 'Classic', 'Tinker: Bonus to magical item effects', NULL, NULL, 'Inventive and brilliant small folk.'),
+('Dwarf', 2, 3, 0, -1, 1, 1, 'Classic', 'Stone Resilience: Immune to knockback', NULL, NULL, 'Tough miners with long traditions.'),
+('Dragonborn', 3, 1, 2, 0, 1, 2, 'Mythical', 'Draconic Blood: +10% fire resistance', 'Prideful and hard to negotiate with', 'Breath Weapon', 'Descendants of ancient dragons.'),
+('Vampire', 2, 1, 2, 2, 1, -2, 'Mythical', 'Lifesteal: Gain HP on melee attack', 'Takes damage in sunlight', 'Blood Drain', 'Elegant predators of the night.'),
+('Undead', 2, 3, 0, 1, 1, 2, 'Mythical', 'Immortal: Immune to poison and disease', 'Weakened by holy items', 'Death Grasp', 'Souls bound to eternal unrest.'),
+('Fairy', -1, 0, 3, 3, 2, -1, 'Mythical', 'Wings: +15% evasion', 'Fragile body (reduced defense)', 'Pixie Dust', 'Tiny, magical beings full of light.'),
+('Kitsune', 0, 0, 4, 2, 2, 1, 'Mythical', 'Trickster: Can confuse enemies', 'Distrustful by nature', 'Foxfire', 'Fox spirits with shapeshifting magic.'),
+('Merfolk', 1, 2, 2, 2, 1, 1, 'Mythical', 'Aquatic: Bonus stats in water', 'Slower on land', 'Tidal Wave', 'Oceanic spellcasters and warriors.');
+
+-- 🟩 Common Classes (Total = 4)
+INSERT INTO classes (class_name, class_type, class_str, class_def, class_int, class_spd, class_luck, class_cha, class_description) VALUES
+('Fighter', 'Common', 2, 2, -1, 1, 0, 0, 'A balanced warrior trained in melee combat.'),
+('Archer', 'Common', 1, 0, 0, 2, 2, -1, 'Quick and precise ranged attacker.'),
+('Acolyte', 'Common', 0, 1, 2, -1, 0, 2, 'A spiritual novice with basic healing magic.'),
+('Scout', 'Common', 1, 0, 1, 2, -1, 1, 'A light and nimble trailblazer.');
+
+
+-- 🟦 Rare Classes (Total = 6)
+INSERT INTO classes (class_name, class_type, class_str, class_def, class_int, class_spd, class_luck, class_cha, class_description) VALUES
+('Ranger', 'Rare', 1, 1, 1, 2, 0, 1, 'A skilled tracker and archer.'),
+('Sorcerer', 'Rare', 1, -2, 3, 2, 1, 1, 'Master of arcane magic with fragile defenses.'),
+('Berserker', 'Rare', 3, 1, -2, 2, 0, 2, 'Frenzied warrior trading smarts for strength.'),
+('Healer', 'Rare', 0, 1, 2, 2, 1, 0, 'Supports allies with healing and buffs.'),
+('Thief', 'Rare', 0, 1, 0, 2, 2, 1, 'Fast, sneaky, and lucky.');
+
+-- 🟨 Epic Classes (Total = 9)
+INSERT INTO classes (class_name, class_type, class_str, class_def, class_int, class_spd, class_luck, class_cha, class_description) VALUES
+('Wizard', 'Epic', 2, -1, 4, 2, 1, 1, 'A high intellect spellcaster with weak armor.'),
+('Barbarian', 'Epic', 4, 2, -4, 3, 2, 2, 'Savage melee warrior with little brainpower.'),
+('Assassin', 'Epic', 2, 1, 3, 3, 4, -4, 'Deadly silent killer who hides in the shadows.'),
+('Druid', 'Epic', 2, 2, 1, 1, 3, 0, 'Nature-based caster and shapeshifter.'),
+('Paladin', 'Epic', 3, 3, 1, 1, 0, 1, 'Holy knight blessed with resilience.');
+
+-- 🟥 Legend Classes (Total = 12)
+INSERT INTO classes (class_name, class_type, class_str, class_def, class_int, class_spd, class_luck, class_cha, class_description) VALUES
+('Archangel', 'Legend', 4, 4, 3, 1, -3, 3, 'A divine being with blessings and power.'),
+('Warlock', 'Legend', 4, 2, 4, 2, -2, -2, 'Deals with dark powers at a cost.'),
+('Shapeshifter', 'Legend', 3, 4, -5, 4, 3, 3, 'Can take many forms but mentally unstable.'),
+('Titan', 'Legend', 5, 3, 2, -3, 3, 2, 'Massive and unstoppable, but slow.'),
+('Overlord', 'Legend', 4, 4, 3, 1, 0, 0, 'Commands with overwhelming power.');
+
+
+INSERT INTO weapon (w_name, w_str, w_int, rarity, special_effects, weapon_description) VALUES
+-- 🟤 COMMON (max atk+int = 2, 0 skills)
+('Rusty Sword', 2, 0, 'Common', '[]', 'An old iron blade barely holding together.'),
+('Cracked Wand', 0, 2, 'Common', '[]', 'A fragile wand humming weak magical energy.'),
+('Stone Club', 1, 1, 'Common', '[]', 'A club carved from rough stone.'),
+('Splintered Spear', 1, 1, 'Common', '[]', 'Wooden spear with a cracked tip.'),
+('Blunt Dagger', 0, 2, 'Common', '[]', 'A dull dagger, more for threats than damage.'),
+
+-- 🔵 RARE (max atk+int = 4, 1 skill)
+('Knightblade', 3, 1, 'Rare', '["Bleed"]', 'A sharp longsword that inflicts lasting cuts.'),
+('Storm Rod', 1, 3, 'Rare', '["Shock"]', 'A wand crackling with storm energy.'),
+('Battle Axe', 4, 0, 'Rare', '["Crush"]', 'A heavy axe that delivers brutal strikes.'),
+('Serpent Staff', 0, 4, 'Rare', '["Poison Touch"]', 'This staff channels venomous spells.'),
+('Twin Daggers', 2, 2, 'Rare', '["Double Strike"]', 'Lightweight blades for fast, paired slashes.'),
+
+-- 🟣 EPIC (max atk+int = 6, 1 skill)
+('Dragonspike', 5, 1, 'Epic', '["Burn"]', 'A jagged blade made from dragon horn.'),
+('Void Channeler', 2, 4, 'Epic', '["Mind Melt"]', 'A dark staff that attacks the mind.'),
+('Thunder Blade', 4, 2, 'Epic', '["Chain Lightning"]', 'Sword that channels lightning across targets.'),
+('Runeblade', 3, 3, 'Epic', '["Mana Leech"]', 'An arcane weapon that feeds on magic.'),
+('Doom Halberd', 6, 0, 'Epic', '["Decimate"]', 'An enormous weapon that devastates enemies.'),
+
+-- 🟡 LEGEND (max atk+int = 9, 2 skills)
+('Phoenix Fang', 5, 4, 'Legend', '["Flame Burst", "Revive Chance"]', 'Glows with rebirth energy from a phoenix.'),
+('Staff of Ancients', 3, 6, 'Legend', '["Arcane Storm", "Mana Shield"]', 'Infused with ancient elemental spirits.'),
+('Oblivion Cleaver', 6, 3, 'Legend', '["Void Slash", "Curse"]', 'Can rip through dimensions.'),
+('Shadow Reaver', 4, 5, 'Legend', '["Backstab", "Invisibility"]', 'Favored by the deadliest assassins.'),
+('Titan’s Wrath', 9, 0, 'Legend', '["Stun", "Quake"]', 'A colossal blade that shakes the earth.');
+

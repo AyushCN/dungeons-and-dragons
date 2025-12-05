@@ -1,0 +1,205 @@
+CREATE TABLE races (
+    race_id INT AUTO_INCREMENT PRIMARY KEY,
+    race_name VARCHAR(40) UNIQUE NOT NULL,
+    race_str INT NOT NULL,
+    race_def INT NOT NULL,
+    race_int INT NOT NULL,
+    race_spd INT NOT NULL,
+    race_luck INT NOT NULL,
+    race_cha INT NOT NULL,
+    race_type ENUM('Classic', 'Mythical') NOT NULL,
+    passive_trait VARCHAR(255) NOT NULL,
+    negative_trait VARCHAR(255),
+    active_skill VARCHAR(255),
+    race_description TEXT NOT NULL
+);
+
+
+
+CREATE TABLE classes (
+    class_id INT AUTO_INCREMENT PRIMARY KEY,
+    class_name VARCHAR(40) UNIQUE NOT NULL,
+    class_type ENUM('Common', 'Rare', 'Epic', 'Legend') NOT NULL,
+
+    class_str INT DEFAULT 0,
+    class_def INT DEFAULT 0,
+    class_int INT DEFAULT 0,
+    class_spd INT DEFAULT 0,
+    class_luck INT DEFAULT 0,
+    class_cha INT DEFAULT 0,
+
+    class_description TEXT NOT NULL
+);
+
+
+
+CREATE TABLE weapon (
+    w_id INT AUTO_INCREMENT PRIMARY KEY,
+    w_name VARCHAR(100) UNIQUE NOT NULL,
+    rarity ENUM('Common', 'Rare', 'Epic', 'Legend') NOT NULL,
+    w_str INT DEFAULT 0,  -- Weapon strength (formerly 'attack')
+    w_int INT DEFAULT 0,  -- Weapon intelligence (formerly 'intelligence')
+    special_effects JSON DEFAULT NULL,
+    weapon_description TEXT NOT NULL,
+    CHECK (
+        (rarity = 'Common' AND (w_str + w_int) <= 2) OR
+        (rarity = 'Rare' AND (w_str + w_int) <= 4) OR
+        (rarity = 'Epic' AND (w_str + w_int) <= 6) OR
+        (rarity = 'Legend' AND (w_str + w_int) <= 9)
+    )
+);
+
+
+CREATE TABLE armor (
+    a_id INT AUTO_INCREMENT PRIMARY KEY,
+    a_name VARCHAR(100) UNIQUE NOT NULL,
+    rarity ENUM('Common', 'Rare', 'Epic', 'Legend') NOT NULL,
+    a_def INT DEFAULT 0,  -- Armor defense (formerly 'defense')
+    a_spd INT DEFAULT 0,  -- Armor speed (formerly 'speed')
+    special_effects JSON DEFAULT NULL,
+    armor_description TEXT NOT NULL,
+    CHECK (
+        (rarity = 'Common' AND (a_def + a_spd) <= 2) OR
+        (rarity = 'Rare' AND (a_def + a_spd) <= 4) OR
+        (rarity = 'Epic' AND (a_def + a_spd) <= 6) OR
+        (rarity = 'Legend' AND (a_def + a_spd) <= 9)
+    )
+);
+
+
+
+CREATE TABLE artifact (
+    art_id INT AUTO_INCREMENT PRIMARY KEY,  -- Renamed from artifact_id
+    art_name VARCHAR(100) UNIQUE NOT NULL,  -- Renamed from artifact_name
+    rarity ENUM('Common', 'Rare', 'Epic', 'Legend') NOT NULL,
+    art_luck INT DEFAULT 0,                 -- Renamed from artifact_luck
+    art_cha INT DEFAULT 0,                  -- Renamed from artifact_cha
+    special_effects JSON NOT NULL,
+    art_description TEXT NOT NULL,          -- Renamed from artifact_description
+    CHECK (
+        (rarity = 'Common' AND (art_luck + art_cha) <= 2) OR
+        (rarity = 'Rare' AND (art_luck + art_cha) <= 4) OR
+        (rarity = 'Epic' AND (art_luck + art_cha) <= 6) OR
+        (rarity = 'Legend' AND (art_luck + art_cha) <= 9)
+    )
+);
+
+
+CREATE TABLE consumable (
+    c_id INT AUTO_INCREMENT PRIMARY KEY,
+    c_name VARCHAR(100) UNIQUE NOT NULL,
+    rarity ENUM('Common', 'Rare', 'Epic', 'Legend') NOT NULL,
+    effect JSON NOT NULL,      -- Array of effects
+    price INT NOT NULL,
+    description TEXT NOT NULL,
+    CHECK (
+        (rarity = 'Common' AND JSON_LENGTH(effect) = 1) OR
+        (rarity = 'Rare' AND JSON_LENGTH(effect) = 1) OR
+        (rarity = 'Epic' AND JSON_LENGTH(effect) = 2) OR
+        (rarity = 'Legend' AND JSON_LENGTH(effect) = 2)
+    )
+);
+
+
+
+
+CREATE TABLE key_items (
+  key_item_id INT PRIMARY KEY AUTO_INCREMENT,
+  key_item_name VARCHAR(255) NOT NULL,
+  description TEXT,
+  item_type VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE characters (
+    character_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    race_id INT NOT NULL,  -- Foreign key
+    class_id INT NOT NULL,  -- Foreign key
+
+    -- Character Stats
+    strength INT DEFAULT 5 CHECK (strength >= 0),
+    defense INT DEFAULT 5 CHECK (defense >= 0),
+    intelligence INT DEFAULT 5 CHECK (intelligence >= 0),
+    speed INT DEFAULT 5 CHECK (speed >= 0),
+    luck INT DEFAULT 5 CHECK (luck >= 0),
+    charisma INT DEFAULT 5 CHECK (charisma >= 0),
+    bonus INT DEFAULT 0 CHECK (bonus >= 0),
+
+    -- Adventure Data
+    level INT DEFAULT 1 CHECK (level > 0),
+    no_of_adventures INT DEFAULT 0 CHECK (no_of_adventures >= 0),
+    gold INT DEFAULT 40 CHECK (gold >= 0),
+
+    -- Description and Adventure Info
+    description TEXT NOT NULL,
+    last_adventure VARCHAR(255) DEFAULT NULL,
+    current_adventure VARCHAR(255) DEFAULT NULL,
+
+    -- Foreign Key Constraints
+    FOREIGN KEY (race_id) REFERENCES races(race_id),
+    FOREIGN KEY (class_id) REFERENCES classes(class_id)
+) ENGINE=InnoDB;
+
+
+
+
+CREATE TABLE bag (
+  character_id INT PRIMARY KEY,
+
+  -- Equipment (referencing item IDs instead of item names)
+  w_1_id INT,  -- Weapon 1 ID
+  w_2_id INT,  -- Weapon 2 ID
+  a_1_id INT,  -- Armor 1 ID
+  a_2_id INT,  -- Armor 2 ID
+  art_1_id INT,  -- Artifact 1 ID
+  art_2_id INT,  -- Artifact 2 ID
+
+  -- Consumables (max 8) (referencing item IDs)
+  consumable_1_id INT,
+  consumable_1_count INT DEFAULT 0 CHECK (consumable_1_count >= 0),
+  consumable_2_id INT,
+  consumable_2_count INT DEFAULT 0 CHECK (consumable_2_count >= 0),
+  consumable_3_id INT,
+  consumable_3_count INT DEFAULT 0 CHECK (consumable_3_count >= 0),
+  consumable_4_id INT,
+  consumable_4_count INT DEFAULT 0 CHECK (consumable_4_count >= 0),
+  consumable_5_id INT,
+  consumable_5_count INT DEFAULT 0 CHECK (consumable_5_count >= 0),
+  consumable_6_id INT,
+  consumable_6_count INT DEFAULT 0 CHECK (consumable_6_count >= 0),
+  consumable_7_id INT,
+  consumable_7_count INT DEFAULT 0 CHECK (consumable_7_count >= 0),
+  consumable_8_id INT,
+  consumable_8_count INT DEFAULT 0 CHECK (consumable_8_count >= 0),
+
+  -- Key Items (max 5) (referencing item IDs)
+  key_item_1_id INT,
+  key_item_2_id INT,
+  key_item_3_id INT,
+  key_item_4_id INT,
+  key_item_5_id INT,
+
+  -- Foreign Keys (referencing item IDs)
+  FOREIGN KEY (character_id) REFERENCES characters(character_id),
+  FOREIGN KEY (w_1_id) REFERENCES weapon(w_id),
+  FOREIGN KEY (w_2_id) REFERENCES weapon(w_id),
+  FOREIGN KEY (a_1_id) REFERENCES armor(a_id),
+  FOREIGN KEY (a_2_id) REFERENCES armor(a_id),
+  FOREIGN KEY (art_1_id) REFERENCES artifact(art_id),
+  FOREIGN KEY (art_2_id) REFERENCES artifact(art_id),
+  FOREIGN KEY (consumable_1_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (consumable_2_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (consumable_3_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (consumable_4_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (consumable_5_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (consumable_6_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (consumable_7_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (consumable_8_id) REFERENCES consumable(c_id),
+  FOREIGN KEY (key_item_1_id) REFERENCES key_items(key_item_id),
+  FOREIGN KEY (key_item_2_id) REFERENCES key_items(key_item_id),
+  FOREIGN KEY (key_item_3_id) REFERENCES key_items(key_item_id),
+  FOREIGN KEY (key_item_4_id) REFERENCES key_items(key_item_id),
+  FOREIGN KEY (key_item_5_id) REFERENCES key_items(key_item_id)
+);
+
