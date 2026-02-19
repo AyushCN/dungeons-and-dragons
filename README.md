@@ -49,8 +49,11 @@ brew install mysql
 # Login to MySQL
 mysql -u root -p
 
-# Run the database.sql file
-source database.sql
+# Run table creation
+source sql.txt
+
+# Insert base data
+source data.txt
 
 # Or copy-paste the SQL commands
 ```
@@ -206,3 +209,7 @@ Feel free to fork and improve! Some ideas:
 ---
 
 **Enjoy your adventure! 🐉⚔️**
+-------------------------------------------------
+
+
+This project was submitted by @AyushCN and @Akshay-Kzi as part of DBMS Mini Project for IIIrd semester.
